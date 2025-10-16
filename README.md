@@ -25,6 +25,7 @@ Prefer your own model? **Change in `config.json` and go.**
 
 ## Table of Contents
 - [📞 Contact & Community](#-contact--community)
+- [📰 Latest News](#️-latest-news)
 - [🖼️ Demos](#️-demos)
 - [✨ Key Features](#-key-features)
 - [📊 Model Performance](#-model-performance)
@@ -38,7 +39,15 @@ Prefer your own model? **Change in `config.json` and go.**
 - [🤝 Contributing](#-contributing)
 - [🗺️ Roadmap](#️-roadmap)
 
+---
 
+## 📰 Latest News
+
+**October 16, 2025** - 🚀 Big news for automation enthusiasts! TuriX now fully supports the cutting-edge **Qwen3-VL** vision-language model, empowering seamless PC automation across both **macOS** and **Windows**. This integration boosts task success rates by up to 15% on complex UI interactions (based on our internal benchmarks), making your desktop workflows smarter and faster than ever. Whether you're scripting daily routines or tackling intricate projects, Qwen3-VL's advanced multimodal reasoning brings unparalleled precision to the table.
+
+**September 30, 2025** - 🎉 Exciting update! We've just released our latest AI model on the [TuriX API platform](https://turixapi.io), bringing enhanced performance, smarter reasoning, and seamless integration for even more powerful desktop automation. Developers and researchers, this is your cue—head over to the platform to access it now and elevate your workflows!
+
+*Stay tuned to our [Discord](https://discord.gg/BRxXtnGg) for tips, user stories, and the next big drop.*
 ---
 
 ## 🖼️ Demos
@@ -85,7 +94,7 @@ Prefer your own model? **Change in `config.json` and go.**
 
 Our agent achieves state-of-the-art performance on desktop automation tasks:
 <p align="center">
-   <img src="./doc/performance_sum.jpeg" width="1600" alt="TuriX performance">
+   <img src="./doc/performance_sum.jpg" width="1600" alt="TuriX performance">
 </p>
 
 For more details, check our [report](https://turix.ai/technical-report/).
@@ -210,10 +219,10 @@ For bug reports and feature requests, please [open an issue](https://github.com/
 |---------|---------|-------------|
 | **2025 Q3** | **✅ Windows Support** | Cross-platform compatibility bringing TuriX automation to Windows environments *(Now Available)* |
 | **2025 Q3** | **✅ Enhanced MCP Integration** | Deeper Model Context Protocol support for seamless third-party agent connectivity *(Now Available)*|
-| **2025 Q4** | **Next-Gen AI Model** | Significantly improved reasoning and task execution capabilities |
+| **2025 Q4** | **✅ Next-Gen AI Model** | Significantly improved clicking accuracy and task execution capabilities |
 | **2025 Q4** | **Planner** | Understands user intent and makes step-by-step plans to complete tasks |
 | **2025 Q4** | **Workflow Automation** | Record, edit, and replay complex multi-step automation sequences |
 | **2026 Q1** | **Offline Model Option** | Fully local inference for maximum privacy and zero API dependency |
 | **2026 Q1** | **Persistent Memory** | Learn user preferences and maintain task history across sessions |
 | **2026 Q2** | **Learning by Demonstration** | Train the agent by showing it your preferred methods and workflows |
-| **2026 Q2** | **Windows-Optimized Model** | Native Windows model architecture for superior performance on Microsoft platforms |
+| **2026 Q2** | **Windows-Optimized Model** | Native Windows model architecture for superior performance on Microsoft platforms
