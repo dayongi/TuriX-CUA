@@ -96,39 +96,30 @@ async def _click_invisible(x, y, button='left'):
     # Create a async thread to run the flash highlight
     asyncio.create_task(flash_click_highlight(x, y))
 
-    src = CGEventSourceCreate(kCGEventSourceStateHIDSystemState)
     if button == 'left':
-        down = CGEventCreateMouseEvent(src,
-                                    kCGEventLeftMouseDown,
-                                    (x, y),
-                                    kCGMouseButtonLeft)
-        CGEventSetIntegerValueField(down,
-                                    kCGMouseEventClickState, 1)
-        CGEventPost(kCGHIDEventTap, down)
-
-        up = CGEventCreateMouseEvent(src,
-                                    kCGEventLeftMouseUp,
-                                    (x, y),
-                                    kCGMouseButtonLeft)
-        CGEventSetIntegerValueField(up,
-                                    kCGMouseEventClickState, 1)
-        CGEventPost(kCGHIDEventTap, up)
+        down_type = Quartz.kCGEventLeftMouseDown
+        up_type   = Quartz.kCGEventLeftMouseUp
+        cg_button = Quartz.kCGMouseButtonLeft
     else:
-        down = CGEventCreateMouseEvent(src,
-                                    kCGEventRightMouseDown,
-                                    (x, y),
-                                    kCGMouseButtonRight)
-        CGEventSetIntegerValueField(down,
-                                    kCGMouseEventClickState, 1)
-        CGEventPost(kCGHIDEventTap, down)
+        down_type = Quartz.kCGEventRightMouseDown
+        up_type   = Quartz.kCGEventRightMouseUp
+        cg_button = Quartz.kCGMouseButtonRight
 
-        up = CGEventCreateMouseEvent(src,
-                                    kCGEventRightMouseUp,
-                                    (x, y),
-                                    kCGMouseButtonRight)
-        CGEventSetIntegerValueField(up,
-                                    kCGMouseEventClickState, 1)
-        CGEventPost(kCGHIDEventTap, up)
+    old_pos = _get_current_mouse_position()  # Save where the user cursor was
+    # try:
+    # Press down
+    move = Quartz.CGEventCreateMouseEvent(None,
+                                      Quartz.kCGEventMouseMoved,
+                                      (x, y), cg_button)
+    Quartz.CGEventPost(Quartz.kCGSessionEventTap, move)
+    
+    await asyncio.sleep(0.03)
+    event_down = Quartz.CGEventCreateMouseEvent(None, down_type, (x, y), cg_button)
+    Quartz.CGEventPost(Quartz.kCGHIDEventTap, event_down)
+    
+    # Release
+    event_up = Quartz.CGEventCreateMouseEvent(None, up_type, (x, y), cg_button)
+    Quartz.CGEventPost(Quartz.kCGHIDEventTap, event_up)
     
 async def _drag_invisible(x1, y1, x2, y2, duration=0.5, steps=60, button='left'):
     src = CGEventSourceCreate(kCGEventSourceStateHIDSystemState)
