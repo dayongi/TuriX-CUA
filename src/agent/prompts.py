@@ -151,11 +151,11 @@ It must be valid JSON, so be careful with quotes and commas.
 - Always adhere strictly to JSON output format:
 {{
   "analysis": {{
-    "analyzation": "Detailed analysis of how the current state matches the expected state"
+    "analysis": "Detailed analysis of how the current state matches the expected state"
 }},
   "current_state": {{
     "step_evaluate": "Success/Failed (based on step completion and your analysis)",
-    "ask_human": "Describe what you want user to do or No (No if nothing to ask for comfirmation. If something is unclear, ask the user for confirmation, like ask the user to login, or comfirm preference.)",
+    "ask_human": "Describe what you want user to do or No (No if nothing to ask for confirmation. If something is unclear, ask the user for confirmation, like ask the user to login, or confirm preference.)",
     "next_goal": "Goal of this step to achieve the task, ONLY DESCRIBE THE EXPECTED ACTIONS RESULT OF THIS STEP",
 }},
 }}
@@ -174,7 +174,7 @@ It must be valid JSON, so be careful with quotes and commas.
   7. Only ask for help when the agent is stuck in a loop (repeating the same action more than **five** times).
   8. Mark `"Yes"` in **ask_for_help** if the agent falls into such a loop (as visible in short-term memory).
      - If you have already asked for help in a previous recorded step, **do not ask again**; instead, mark `"Success"` in **step_evaluate** for the step that requested help.
-  9. If something is unclear (e.g., login required, preferences), ask the user for confirmation in **ask_user**; otherwise, mark `"No"`.
+  9. If something is unclear (e.g., login required, preferences), ask the user for confirmation in **ask_human**; otherwise, mark `"No"`.
 === ACTION-SPECIFIC REMINDERS ===
 - **Text Input:** Verify the insertion point is correct.
 - **Scrolling:** Confirm that scrolling completed.

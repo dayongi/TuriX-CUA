@@ -54,7 +54,6 @@ class AgentOutput(BaseModel):
         max_items=10,                     # ← hard limit
         description="Ordered list of 0-10 actions for this step."
     )
-    current_state: AgentBrain
     @staticmethod
     def type_with_custom_actions(custom_actions: Type[ActionModel]) -> Type['AgentOutput']:
         """Extend actions with custom actions"""

@@ -143,9 +143,9 @@ class OutputSchemas:
             "analysis": {
                 "type": "object",
                 "properties": {
-                    "analyzation": {"type": "string"}
+                    "analysis": {"type": "string"}
                 },
-                "required": ["analyzation"]
+                "required": ["analysis"]
             },
             "current_state": {
                 "type": "object",

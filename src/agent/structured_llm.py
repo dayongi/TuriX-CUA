@@ -45,7 +45,7 @@ class ActionItem(BaseModel):
 # ---------------------------------------------------------------------------
 
 class Analysis(BaseModel):
-    analyzation: str = Field(..., description="Detailed analysis of how the current state matches the expected state.")
+    analysis: str = Field(..., description="Detailed analysis of how the current state matches the expected state.")
 
 class CurrentState(BaseModel):
     evaluation_previous_goal: str = Field(..., description="Success/Failed (based on step completion)")

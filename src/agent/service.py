@@ -481,17 +481,18 @@ class Agent:
         Build a 'structured_llm' approach on top of self.llm. 
         Using the dynamic self.AgentOutput
         """        
-        response: dict[str, Any] = await self.llm.ainvoke(input_messages)
+        response: dict[str, Any] = await self.actor_llm.ainvoke(input_messages)
         logger.debug(f'LLM response: {response}')
         record = str(response.content)
 
         output_dict = json.loads(record)
-
-        brain = AgentBrain(evaluation_previous_goal=output_dict['current_state']['evaluation_previous_goal'],
-                            information_stored=output_dict['current_state']['information_stored'],
-                            next_goal=output_dict['current_state']['next_goal'],
-                            )
-        parsed: AgentOutput | None = AgentOutput(current_state=brain, action=output_dict['action'])
+        for i in range(len(output_dict['action'])):
+            outer_key = list(output_dict['action'][i].keys())[0]
+            inner_value = output_dict['action'][i][outer_key]
+            if outer_key == "record_info":
+                information_stored = inner_value.get("text", "None")
+                self.infor_memory.append({f'Step {self.n_steps}, the information stored is: {information_stored}'})
+        parsed: AgentOutput | None = AgentOutput(action=output_dict['action'])
 
         self._log_response(parsed)
         return parsed, record
