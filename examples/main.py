@@ -113,12 +113,14 @@ def main(config_path: str = "config.json"):
 
     # --- Build LLM & Agent --------------------------------------------------
     llm = build_llm(cfg["llm"])
+    planner_llm = build_llm(cfg["planner_llm"])
     agent_cfg = cfg["agent"]
     controller = Controller()
 
     agent = Agent(
         task                    = agent_cfg["task"],
         llm                     = llm,
+        planner_llm             = planner_llm,
         use_turix               = agent_cfg.get("use_turix", True),
         short_memory_len        = agent_cfg.get("short_memory_len", 5),
         controller              = controller,
