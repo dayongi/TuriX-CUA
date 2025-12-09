@@ -258,13 +258,14 @@ class AgentMessagePrompt:
             })
 
         # Add action results as text
-        if self.result:
-            results_text = "\n".join(
-                f"ACTION RESULT {i+1}: {r.extracted_content}" if r.extracted_content 
-                else f"ACTION ERROR {i+1}: ...{r.error[-self.max_error_length:]}" 
-                for i, r in enumerate(self.result)
-            )
-            content.append({"type": "text", "text": results_text})
+        # since
+        # if self.result:
+        #     results_text = "\n".join(
+        #         f"ACTION RESULT {i+1}: {r.extracted_content}" if r.extracted_content 
+        #         else f"ACTION ERROR {i+1}: ...{r.error[-self.max_error_length:]}" 
+        #         for i, r in enumerate(self.result)
+        #     )
+        #     content.append({"type": "text", "text": results_text})
 
         return HumanMessage(content=content)
 

@@ -124,6 +124,7 @@ class Agent:
         self.wait_this_step = False
         self.agent_id = agent_id or str(uuid.uuid4())
         self.task = task
+        self.original_task = task
         self.resume = resume
         self.brain_llm = to_structured(brain_llm, OutputSchemas.BRAIN_RESPONSE_FORMAT, BrainOutput)
         self.actor_llm = to_structured(actor_llm, OutputSchemas.ACTION_RESPONSE_FORMAT, ActorOutput)
