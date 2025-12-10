@@ -258,7 +258,7 @@ class AgentMessagePrompt:
             })
 
         # Add action results as text
-        # since
+        # since we introduce the result into brain in state_content, here is not required
         # if self.result:
         #     results_text = "\n".join(
         #         f"ACTION RESULT {i+1}: {r.extracted_content}" if r.extracted_content 

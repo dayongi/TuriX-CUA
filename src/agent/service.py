@@ -402,7 +402,7 @@ class Agent:
                 ]
             self.actor_message_manager._remove_last_AIntool_message()
             self.actor_message_manager._remove_last_state_message()
-            self.actor_message_manager.add_state_message(state_content, self._last_result, step_info)
+            self.actor_message_manager.add_state_message(state_content, step_info = step_info)
             
             actor_messages = self.actor_message_manager.get_messages()
             model_output, raw = await self.get_next_action(actor_messages)
@@ -702,6 +702,7 @@ class Agent:
             include_attributes=self.include_attributes,
             max_error_length=self.max_error_length,
             max_actions_per_step=self.max_actions_per_step,
+            give_task=True
         )
         self.actor_message_manager = MessageManager(
             llm=self.actor_llm,
@@ -712,4 +713,5 @@ class Agent:
             include_attributes=self.include_attributes,
             max_error_length=self.max_error_length,
             max_actions_per_step=self.max_actions_per_step,
+            give_task=False
         )
