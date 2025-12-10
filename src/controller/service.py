@@ -198,41 +198,7 @@ class Controller:
 				logger.error(msg)
 				return ActionResult(extracted_content=msg, error=msg)
 
-			# Give macOS time to start the app
-			await asyncio.sleep(1)
 			pid = None
-			# check if the pid is an integer or a string of integer
-			if isinstance(pid, str) and pid.isdigit():
-				pid = int(pid)
-			elif not isinstance(pid, int):
-				pid = None
-			
-			if not pid:
-				msg = f"❌ Could not find a matching PID for '{user_input}'"
-				logger.error(msg)
-				user_norm = normalize_for_matching(user_input)
-				pid = fuzzy_find_pid(user_norm, workspace)
-
-				if not pid:
-					try:
-						logger.debug(f'Attempting to find PID using pgrep for app: {app_name}')
-						result = subprocess.run(
-							['pgrep', '-i', app_name],
-							capture_output=True,
-							text=True
-						)
-						if result.returncode == 0 and result.stdout.strip():
-							# pgrep might return multiple PIDs, take the first one
-							pid = int(result.stdout.strip().split('\n')[0])
-							logging.debug(f'Found PID using pgrep: {pid}')
-						else:
-							logging.error(f'❌ Failed to find PID for app: {app_name} with pgrep')
-					except Exception as e:
-						logging.error(f'❌ Error while running pgrep: {str(e)}')
-				if not pid:
-					msg = f"❌ Could not find a matching PID for '{user_input}'"
-					logger.error(msg)
-					return ActionResult(extracted_content=msg, error=msg)
 
 			success_msg = f"✅ Launched {user_input}, PID={pid}"
 			logger.info(success_msg)

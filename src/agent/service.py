@@ -155,7 +155,7 @@ class Agent:
         self.status = "success"
         # Setup dynamic Action Model
         self._setup_action_models()
-        self._set_model_names()
+        # self._set_model_names()
         if self.planner_llm:
             self.planner = Planner(
                 planner_llm=self.planner_llm,
@@ -163,7 +163,7 @@ class Agent:
                 max_input_tokens=self.max_input_tokens,
             )
 
-        self.tool_calling_method = self.set_tool_calling_method(tool_calling_method)
+        # self.tool_calling_method = self.set_tool_calling_method(tool_calling_method)
         self.initiate_messages()
         self._last_result = None
 
@@ -518,13 +518,13 @@ class Agent:
     
 
     def _log_response(self, response: AgentOutput) -> None:
-        if 'Success' in self.current_state.step_evaluate:
+        if 'Success' in self.current_state["step_evaluate"]:
             emoji = '✅'
-        elif 'Failed' in self.current_state.step_evaluate:
+        elif 'Failed' in self.current_state["step_evaluate"]:
             emoji = '❌'
         else:
             emoji = '🤷'
-        logger.info(f'{emoji} Eval: {self.current_state.step_evaluate}')
+        logger.info(f'{emoji} Eval: {self.current_state["step_evaluate"]}')
         logger.info(f'🧠 Memory: {self.state_memory}')
         logger.info(f'🎯 Goal to achieve this step: {self.next_goal}')
         for i, action in enumerate(response.action):
