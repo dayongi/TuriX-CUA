@@ -224,20 +224,16 @@ class Agent:
                 if r.current_app_pid:
                     latest_pid = r.current_app_pid
         return latest_pid
-    
-
 
 
     def _update_short_memory(self) -> None:
         """
-        更新记忆内容，对中期记忆内容进行删减。
+        Update memory content
         """
-
 
         memory_content = []
         sorted_steps = sorted(self.brain_history_memory.keys(), reverse=True)
         
-        # 1. 清理：只保留最近15步
         steps_to_keep = sorted_steps[:15]
         for step in sorted_steps:
             if step not in steps_to_keep:
@@ -258,7 +254,6 @@ class Agent:
                 if 'task_progress' in data:
                     del data['task_progress']
      
-            # --- 压缩 analysis ---
             distance = self.n_steps - step
             if distance >= 5:
                 if 'current_state' in data and 'analysis' in data:
@@ -266,7 +261,6 @@ class Agent:
                     self.brain_history_memory[step] = summary
                     data = summary 
 
-        # 3. 生成字符串
         steps_to_render = sorted(steps_to_keep)
         for step in steps_to_render:
             data = self.brain_history_memory[step]
@@ -274,10 +268,9 @@ class Agent:
             
             entry_str = ""
             if distance < 5:
-                # 短期记忆：完整 JSON
+                
                 entry_str = f"Step {step} Brain Thought: {json.dumps(data, ensure_ascii=False)}"
             else:
-                # 中期记忆：摘要 JSON
                 entry_str = f"Step {step} Brain Summary: {json.dumps(data, ensure_ascii=False)}"
             
             memory_content.append(entry_str)
@@ -296,7 +289,7 @@ class Agent:
             "next_goal": self.next_goal,
             "last_step_action": self.last_step_action,
             "infor_memory": self.infor_memory,
-            # "brain_history_memory": self.brain_history_memory, # 替换 state_memory
+            # "brain_history_memory": self.brain_history_memory,
             'brain_history_memory': self.brain_history_memory,
 
             "step": self.n_steps
@@ -503,11 +496,8 @@ class Agent:
                 self.wait_this_step = False
             if self.last_step_action and not self.wait_this_step:
 
-                
-                # --- 更新记忆 --- 
                 self._update_short_memory()
-                self.save_memory
-            
+                self.save_memory()
 
         except Exception as e:
             result = await self._handle_step_error(e)
