@@ -350,7 +350,6 @@ class Agent:
                             f"Previous step is {prev_step_id}.\n\n"
                             f"Necessary information remembered is:\n{self.infor_memory}\n\n"
                             f"Previous Actions Short History:\n{self.short_memory}\n\n"
-                            f"Actions take by actor last step:\n{self.last_step_action}\n\n"
                         )
                     }
                 ]
