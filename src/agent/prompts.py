@@ -173,6 +173,8 @@ It must be valid JSON, so be careful with quotes and commas.
      - If the loading bar is clearly still progressing, mark `"Success"`.
   7. If something is unclear (e.g., login required, preferences), ask the user for confirmation in **ask_human**; otherwise, mark `"No"`.
   8. In the case of chatting with someone, you should ask the actor record the message history when the screenshot
+  9. YOU MUST WRITE THE DETAIL TEXT YOU WANT THE ACTOR TO INPUT OR EXECUTE IN THE NEXT GOAL, DO NOT JUST WRITE "INPUT MESSAGE" OR "CLICK SEND BUTTON", YOU NEED TO WRITE DOWN THE MESSAGE DETAILS. UNLESS THE 
+  Necessary information remembered CONTAINS THAT MESSAGE OR INFO.
 === ACTION-SPECIFIC REMINDERS ===
 - **Text Input:** Verify the insertion point is correct.
 - **Scrolling:** Confirm that scrolling completed.
