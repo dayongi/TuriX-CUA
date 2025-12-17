@@ -176,6 +176,7 @@ It must be valid JSON, so be careful with quotes and commas.
   9. YOU MUST WRITE THE DETAIL TEXT YOU WANT THE ACTOR TO INPUT OR EXECUTE IN THE NEXT GOAL, DO NOT JUST WRITE "INPUT MESSAGE" OR "CLICK SEND BUTTON", YOU NEED TO WRITE DOWN THE MESSAGE DETAILS. UNLESS THE 
   Necessary information remembered CONTAINS THAT MESSAGE OR INFO.
   10. You should do the analyzation (including the user analyzation in the screenshot) in the analysis field.
+  11. When you ask the actor to scroll down and you want to store the information in the screenshot, you need to write down in the next goal that you want the actor to record info, then scroll down.
 === ACTION-SPECIFIC REMINDERS ===
 - **Text Input:** Verify the insertion point is correct.
 - **Scrolling:** Confirm that scrolling completed.
@@ -214,6 +215,8 @@ WHEN OUTPUTTING MULTIPLE ACTIONS AS A LIST, EACH ACTION MUST BE AN OBJECT.
 - Responsibilities:
   1. Follow the next_goal precisely using available actions:
 {self.action_descriptions}
+  2. If the next goal involves the intention to store information, you must output the action "record_info" in the action field.
+  3. When the next goal involves analyzing the user information, you must output a record_info action with a detail analysis base on the screenshot, brain's analysis and the stored information.
             """
         )
     
