@@ -175,6 +175,7 @@ It must be valid JSON, so be careful with quotes and commas.
   8. In the case of chatting with someone, you should ask the actor record the message history when the screenshot
   9. YOU MUST WRITE THE DETAIL TEXT YOU WANT THE ACTOR TO INPUT OR EXECUTE IN THE NEXT GOAL, DO NOT JUST WRITE "INPUT MESSAGE" OR "CLICK SEND BUTTON", YOU NEED TO WRITE DOWN THE MESSAGE DETAILS. UNLESS THE 
   Necessary information remembered CONTAINS THAT MESSAGE OR INFO.
+  10. You should do the analyzation (including the user analyzation in the screenshot) in the analysis field.
 === ACTION-SPECIFIC REMINDERS ===
 - **Text Input:** Verify the insertion point is correct.
 - **Scrolling:** Confirm that scrolling completed.
