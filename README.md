@@ -228,8 +228,8 @@ For bug reports and feature requests, please [open an issue](https://github.com/
 | **2025 Q4** | **✅ Support Gemini-3-pro model** | Run with any compatible vision language models |
 | **2025 Q4** | **✅ Planner** | Understands user intent and makes step-by-step plans to complete tasks |
 | **2025 Q4** | **✅ Multi-Agent Architecture** | Evaluate and guide each step in working |
-| **2025 Q4** | **Duckduckgo Integration** | Speed up the information gathering process, for smarter planning |
-| **2025 Q4** | **Workflow Automation** | Record, edit, and replay complex multi-step automation sequences |
+| **2025 Q4** | **✅ Duckduckgo Integration** | Speed up the information gathering process, for smarter planning (multi-agent branch) |
+| **2026 Q1** | **Workflow Automation** | Record, edit, and replay complex multi-step automation sequences |
 | **2026 Q1** | **Offline Model Option** | Fully local inference for maximum privacy and zero API dependency |
 | **2026 Q1** | **Persistent Memory** | Learn user preferences and maintain task history across sessions |
 | **2026 Q2** | **Learning by Demonstration** | Train the agent by showing it your preferred methods and workflows |
