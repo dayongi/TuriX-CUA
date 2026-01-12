@@ -48,7 +48,7 @@ def build_llm(cfg: dict):
             model=model_name,
             openai_api_base=base_url,
             openai_api_key=api_key,
-            temperature=0.3,
+            temperature=0.1,
         )
 
     if provider == "ollama":
