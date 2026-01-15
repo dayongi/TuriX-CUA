@@ -1,7 +1,5 @@
 from __future__ import annotations
-import re
-import json
-from typing import List, Optional, Dict, Any, Union
+from typing import List, Optional, Dict, Any
 from pydantic import BaseModel, Field, ConfigDict, field_validator, model_validator
 from src.controller.views import *
 # ---------------------------------------------------------------------------
@@ -10,7 +8,7 @@ from src.controller.views import *
 
 class ActionItem(BaseModel):
     """Exactly one of the fields must be populated to specify the concrete action."""
-    model_config = ConfigDict(exclude_none=True) 
+    model_config = ConfigDict(exclude_none=True, populate_by_name=True)
     done: Optional[NoParamsAction] = None
     input_text: Optional[InputTextAction] = None
     open_app: Optional[OpenAppAction] = None
@@ -51,6 +49,9 @@ class CurrentState(BaseModel):
     ask_human: str = Field(..., description="Describe what you want user to do or No (No if nothing to ask for comfirmation. If something is unclear, ask the user for confirmation, like ask the user to login, or comfirm preference.)")
     next_goal: str = Field(..., description="Goal of this step based on actions, ONLY DESCRIBE THE EXPECTED ACTIONS RESULT OF THIS STEP")
 
+class ReadFilesRequest(BaseModel):
+    files: List[str] = Field(..., description="Recorded info filenames to read.")
+
 # ---------------------------------------------------------------------------
 # AGENT STEP OUTPUT (MAIN MODEL)
 # ---------------------------------------------------------------------------
@@ -86,8 +87,19 @@ class BrainOutput(BaseModel):
       are allowed in a single step.
     - ``current_state``: diagnostic information that supervisors/evaluators can use.
     """
-    analysis: Analysis
-    current_state: CurrentState
+    analysis: Optional[Analysis] = None
+    current_state: Optional[CurrentState] = None
+    read_files: Optional[ReadFilesRequest] = None
+
+    @model_validator(mode="after")
+    def validate_output(self) -> "BrainOutput":
+        if self.read_files:
+            if self.analysis or self.current_state:
+                raise ValueError("Read-files output must not include analysis or current_state.")
+        else:
+            if not (self.analysis and self.current_state):
+                raise ValueError("analysis and current_state are required when read_files is not requested.")
+        return self
 
     def __repr__(self) -> str:
         non_none = self.model_dump(exclude_none=True)
