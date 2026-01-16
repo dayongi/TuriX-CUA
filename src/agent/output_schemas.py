@@ -222,6 +222,16 @@ class OutputSchemas:
     PLANNER_SCHEMA = {
         "type": "object",
         "properties": {
+            "iteration_info": {
+                "type": "object",
+                "properties": {
+                    "current_iteration": {"type": "integer", "minimum": 1},
+                    "total_iterations": {"type": "integer", "minimum": 1}
+                },
+                "required": ["current_iteration", "total_iterations"],
+                "additionalProperties": False
+            },
+            "search_summary": {"type": "string"},
             "step_by_step_plan": {
                 "type": "array",
                 "items": {
@@ -233,14 +243,17 @@ class OutputSchemas:
                         },
                         "description": {
                             "type": "string"
+                        },
+                        "important_search_info": {
+                            "type": "string"
                         }
                     },
-                    "required": ["step_id", "description"],
+                    "required": ["step_id", "description", "important_search_info"],
                     "additionalProperties": False
                 }
             }
         },
-        "required": ["step_by_step_plan"],
+        "required": ["iteration_info", "search_summary", "step_by_step_plan"],
         "additionalProperties": False
     }
 
