@@ -204,9 +204,10 @@ class OutputSchemas:
     MEMORY_SCHEMA = {
         "type": "object",
         "properties": {
-            "summary": {"type": "string"}
+            "summary": {"type": "string"},
+            "file_name": {"type": "string"}
         },
-        "required": ["summary"]
+        "required": ["summary", "file_name"]
     }
 
     MEMORY_RESPONSE_FORMAT = {
