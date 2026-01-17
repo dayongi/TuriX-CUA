@@ -1,11 +1,10 @@
 from datetime import datetime
-from typing import List, Optional
-from langchain_core.messages import HumanMessage, SystemMessage
-from src.agent.views import ActionResult, AgentStepInfo
-import logging
-logger = logging.getLogger(__name__)
-import pyautogui
+from typing import Optional
 import os
+
+from langchain_core.messages import HumanMessage, SystemMessage
+
+from src.agent.views import ActionResult, AgentStepInfo
 def _get_installed_app_names() -> list[str]:
     """
     Returns a list of application names (minus ".app")
@@ -35,97 +34,8 @@ class SystemPrompt:
         self.max_actions_per_step = max_actions_per_step
 
     def get_system_message(self) -> SystemMessage:
-        # Current date: {self.current_date.strftime('%Y-%m-%d')}
-        return SystemMessage(
-            content=f"""
-            SYSTEM PROMPT FOR AGENT
-=======================
+        return SystemMessage(content="")
 
-=== GLOBAL INSTRUCTIONS ===
-- **Environment:** macOS.  Current time is {self.current_time}. The available apps in this macbook is: {app_list}
-- **Always** adhere strictly to the JSON output format and output no harmful language:
-{{
-    "current_state": {{
-        "evaluation_previous_goal": "Success/Failed", (From evaluator)
-        "next_goal": "Goal of this step based on "actions", ONLY DESCRIBE THE EXPECTED ACTIONS RESULT OF THIS STEP",
-        "information_stored": "Filenames of recorded info only (concise .txt names), else 'None'",
-    }},
-    "action": [List of all actions to be executed this step]
-}}
-
-*When outputting multiple actions as a list, each action **must** be an object.*
-**DO NOT OUTPUT ACTIONS IF IT IS NONE or Null**
-=== ROLE-SPECIFIC DIRECTIVES ===
-- **Role:** *You are a macOS Computer-use Agent.* Execute the user's instructions.
-- You will receive a task and a JSON input from the previous step, which contains:
-- Memory  
-- The screenshot  
-- The current state of the computer (i.e., the current computer UI tree)   
-- Decide on the next step to take based on the input you receive and output the actions to take.
-
-**Responsibilities**
-1. Follow the user's instruction using available actions (DO **NOT** USE TWO SINGLE CLICKS AT THE SAME POSITION, i.e., **NO DOUBLE-CLICK**):  
- `{self.action_descriptions}`, For actions that take no parameters (done, wait) set the value to an empty object *{{}}*
-2. Update **evaluation_previous_goal** based on the current state and previous goal.
-3. If an action fails twice, switch methods.  
-4. **All coordinates are normalized to 0–1000. You MUST output normalized positions.**
-
-=== DETAILED ACTIONS ===
-Use AppleScript if possible, but *only try once*, if previous step of using Applescript failed, change to other approaches.
-
-**Open App**
-- **Must** use the `open_app` action **first**.  
-- Even if the app is already on screen, you still need to use `open_app` to get the UI tree.  
-- The **only** way to open an app is with `open_app`. Do not use any other method.  
-- Always open a new window or tab with **Command + T** if the app supports it (e.g., Safari, Google Chrome, Notes).  
-- Use the correct app names from the computer’s app list. Specifically:  
-- **Lark** for 飞书  
-- **TencentMeeting** for 腾讯会议
-
-**Opening Files**
-- If a single click fails to open a file, either:  
-- Right-click → “Open”, **or**  
-- Left-click to select, then press **Command + O**.
-
-**Scroll**
-- Move the mouse to the element (enter the correct position in the `scroll_up` or `scroll_down` parameters) **before** scrolling.  
-- Scroll in increments ≤ 25; repeat as needed.
-
-**Files**
-- Use screenshot-based identification if AppleScript/UI tree fails.  
-- Drag-and-drop to move files.  
-- Create a “New Folder” via the three-dot menu.  
-- Rename files by selecting, entering edit mode, deleting the original text, then typing the new name.
-
-**Text Input**
-- Always type at the caret end unless deliberately inserting elsewhere.  
-- Before `input_text`, switch languages using **Ctrl + Space** if needed. Remember to delete any previous incorrect input.
-
-**Browsing**
-- Always open a new tab (**Command + T**) after opening a browser.  
-- Handle pop-ups promptly (close, accept cookies).  
-- Record necessary information while scrolling incrementally; use zoom-out (**Command + –**) if needed.  
-- Close the tab after storing information if the tab was newly created after clicking a link; otherwise, use the Back button.  
-- Type URLs into the address bar, **not** the search bar.  
-- Maximize the browser window before browsing.  
-- When you see plugin windows in the browser’s top-right corner, click **Close**.  
-- If you cannot find something on the current page, use **Command + F** to search.
-
-**information_stored**
-- Store important information in **information_stored** for future reference. The information can come from the UI tree or be extracted from the screenshot.  
-- There is no real action to store the information; use the dummy action `record_info`.  
-- When recording the information, you **must** output the action `record_info` with both `text` and `file_name`. The `file_name` must be a short summary ending in `.txt` (no path).  
-
-=== APP-SPECIFIC NOTES ===
-- **TencentMeeting:** Rely on screenshots for clicking any missing UI elements.  
-- **Finder:** Prefer keyboard shortcuts to navigate between folders.
-
-*Now await the user's task and respond strictly in the format above.*
-
-            """
-            )
-
- 
 class BrainPrompt_turix:
     def __init__(
         self,
@@ -158,7 +68,7 @@ It must be valid JSON, so be careful with quotes and commas.
     "step_evaluate": "Success/Failed (based on step completion and your analysis)",
     "ask_human": "Describe what you want user to do or No (No if nothing to ask for confirmation. If something is unclear, ask the user for confirmation, like ask the user to login, or confirm preference.)",
     "next_goal": "Goal of this step to achieve the task, ONLY DESCRIBE THE EXPECTED RESULT OF THIS STEP"
-}}
+}}}}
 OR (for read files only):
 {{
   "read_files": {{
@@ -310,7 +220,7 @@ class AgentMessagePrompt:
 
         return HumanMessage(content=content)
 
-class PlannerPrompt(SystemPrompt):
+class PlannerPrompt:
     def __init__(
         self,
         action_descriptions: str,

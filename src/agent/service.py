@@ -942,7 +942,7 @@ class Agent:
             llm=self.brain_llm,
             task=self.task,
             action_descriptions=self.controller.registry.get_prompt_description(),
-            system_prompt_class=BrainPrompt_turix, # Typically your SystemPrompt
+            system_prompt_class=BrainPrompt_turix, # Brain system prompt
             max_input_tokens=self.max_input_tokens,
             include_attributes=self.include_attributes,
             max_error_length=self.max_error_length,
@@ -953,7 +953,7 @@ class Agent:
             llm=self.actor_llm,
             task=self.task,
             action_descriptions=self.controller.registry.get_prompt_description(),
-            system_prompt_class=ActorPrompt_turix, # Typically your SystemPrompt
+            system_prompt_class=ActorPrompt_turix, # Actor system prompt
             max_input_tokens=self.max_input_tokens,
             include_attributes=self.include_attributes,
             max_error_length=self.max_error_length,
@@ -964,7 +964,7 @@ class Agent:
             llm=self.memory_llm,
             task=self.task,
             action_descriptions=self.controller.registry.get_prompt_description(),
-            system_prompt_class=MemoryPrompt, # Typically your SystemPrompt
+            system_prompt_class=MemoryPrompt, # Memory system prompt
             max_input_tokens=self.max_input_tokens,
             include_attributes=self.include_attributes,
             max_error_length=self.max_error_length,
