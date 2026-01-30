@@ -1,6 +1,6 @@
 {
   "logging_level": "DEBUG",
-
+  "output_dir": ".turix_tmp",
   "brain_llm": {
     "provider": "turix",
     "model_name": "turix-brain-model",

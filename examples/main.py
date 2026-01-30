@@ -41,6 +41,31 @@ HOTKEY_ALIASES = {
     "opt": "<alt>",
 }
 
+def resolve_output_dir(cfg: dict, config_path: Path) -> Path:
+    output_dir = (
+        os.getenv("TURIX_OUTPUT_DIR")
+        or cfg.get("output_dir")
+        or cfg.get("agent", {}).get("output_dir")
+    )
+    if output_dir:
+        path = Path(output_dir).expanduser()
+        if not path.is_absolute():
+            path = (Path(config_path).parent / path).resolve()
+    else:
+        path = (project_root / ".turix_tmp").resolve()
+    path.mkdir(parents=True, exist_ok=True)
+    return path
+
+def resolve_artifact_path(raw_path: str | None, output_dir: Path) -> str | None:
+    if not raw_path:
+        return None
+    path = Path(raw_path).expanduser()
+    if not path.is_absolute():
+        path = output_dir / path
+    if path.parent:
+        path.parent.mkdir(parents=True, exist_ok=True)
+    return str(path)
+
 def load_config(path: Path) -> dict:
     if not path.exists():
         raise FileNotFoundError(f"Config file {path} not found.")
@@ -134,6 +159,7 @@ def main(config_path: str = "config.json"):
         config_path = Path(__file__).parent / config_path
     
     cfg = load_config(Path(config_path))
+    output_dir = resolve_output_dir(cfg, Path(config_path))
 
     # --- Logging -----------------------------------------------------------
     log_level_str = cfg.get("logging_level", "DEBUG").upper()
@@ -146,7 +172,7 @@ def main(config_path: str = "config.json"):
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         handlers=[
             logging.StreamHandler(),  # Console output
-            RotatingFileHandler("logging.log", maxBytes=20 * 1024 * 1024, backupCount=3)
+            RotatingFileHandler(str(output_dir / "logging.log"), maxBytes=20 * 1024 * 1024, backupCount=3)
         ]
     )
     
@@ -192,6 +218,15 @@ def main(config_path: str = "config.json"):
     controller = Controller()
     raw_hotkey = agent_cfg.get("force_stop_hotkey")
     force_stop_hotkey = normalize_hotkey(raw_hotkey) if raw_hotkey else ""
+    save_brain_conversation_path = resolve_artifact_path(
+        agent_cfg.get("save_brain_conversation_path"), output_dir
+    )
+    save_actor_conversation_path = resolve_artifact_path(
+        agent_cfg.get("save_actor_conversation_path"), output_dir
+    )
+    save_planner_conversation_path = resolve_artifact_path(
+        agent_cfg.get("save_planner_conversation_path"), output_dir
+    )
 
     agent = Agent(
         task                    = agent_cfg["task"],
@@ -210,12 +245,13 @@ def main(config_path: str = "config.json"):
         max_actions_per_step    = agent_cfg.get("max_actions_per_step", 5),
         resume                  = agent_cfg.get("resume", False),
         agent_id                = agent_cfg.get("agent_id"),
-        save_brain_conversation_path  = agent_cfg.get("save_brain_conversation_path"),
+        save_brain_conversation_path  = save_brain_conversation_path,
         save_brain_conversation_path_encoding = agent_cfg.get("save_brain_conversation_path_encoding", "utf-8"),
-        save_actor_conversation_path  = agent_cfg.get("save_actor_conversation_path"),
+        save_actor_conversation_path  = save_actor_conversation_path,
         save_actor_conversation_path_encoding = agent_cfg.get("save_actor_conversation_path_encoding", "utf-8"),
-        save_planner_conversation_path = agent_cfg.get("save_planner_conversation_path"),
+        save_planner_conversation_path = save_planner_conversation_path,
         save_planner_conversation_path_encoding = agent_cfg.get("save_planner_conversation_path_encoding", "utf-8"),
+        artifacts_dir           = str(output_dir),
     )
 
     async def runner():
@@ -240,7 +276,6 @@ def main(config_path: str = "config.json"):
 
 # ---------- CLI -------------------------------------------------------------
 if __name__ == "__main__":
-    os.makedirs("images", exist_ok=True)
     parser = argparse.ArgumentParser(description="Run the TuriX agent.")
     parser.add_argument(
         "-c", "--config", default="config.json", help="Path to configuration JSON file"
